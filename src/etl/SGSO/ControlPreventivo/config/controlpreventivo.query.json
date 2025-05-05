@@ -1,0 +1,33 @@
+[
+  {
+    "$match": {
+      "Momento.IdMomento": {
+        "$in": [
+          2
+        ]
+      }
+    }
+  },
+  {
+    "$project": {
+      "_id": 1,
+      "Id": 1,
+      "IdDelegacion": 1,
+      "IdControlPreventivo": 1,
+      "Tecnico": 1,
+      "Pais": 1,
+      "Empresa": 1,
+      "OT": 1,
+      "Delegacion": 1,
+      "Momento": 1,
+      "OrdenServicio": 1,
+      "FechaRegistro": 1,
+      "Estado": 1,
+      "IdActividad": 1,
+      "JefeObraRecurso": 1,
+      "EstadoRevision": 1,
+      "Puntuacion": 1,
+      "Grupo": 1
+    }
+  }
+]

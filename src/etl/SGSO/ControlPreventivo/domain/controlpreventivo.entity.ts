@@ -1,0 +1,25 @@
+export class ControlPreventivoEntity {
+  constructor(
+    public padre_id: string | null,
+    public codigo: string | null,
+    public codigoPais: string | null,
+    public codigoOT: string | null,
+    public codigoDelegacion: string | null,
+    public codigoEmpresa: string | null,
+    public codigoActividad: string | null,
+    public codigoMomento: string | null,
+    public codigoFechaRegistro: string | null,
+    public tecnico: string | null,
+    public jefetrabajo: string | null,
+    public idControlPreventivo: string | null,
+    public estado: string | null,
+    public estadorevision: string | null,
+    public puntuacion: string | null,
+    public comentario: string | null,
+    public autoridentificacion: string | null,
+    public fechapuntuacion: string | null,
+    public personalrevisionpdf: string | null,
+    public personalrevisionaudio: string | null,
+    public nombreGrupo: string | null,
+  ) {}
+}
