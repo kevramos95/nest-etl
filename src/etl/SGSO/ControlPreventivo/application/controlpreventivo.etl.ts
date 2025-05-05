@@ -13,7 +13,7 @@ export async function runSGSOControlPreventivoETL(pool: mssql.ConnectionPool) {
 
   // Mapear los registros de Mongo a instancias de ControlPreventivoEntity
   const entidades: ControlPreventivoEntity[] = registros.map(d => new ControlPreventivoEntity(
-    d.padre_id ?? null,
+    d._id.toString() ?? null,
     d.codigo ?? null,
     d.codigoPais ?? null,
     d.codigoOT ?? null,

@@ -7,10 +7,10 @@ export class SqlService {
 
   async connect() {
     this.pool = await mssql.connect({
-      user: 'sa',
-      password: 'Pp131471483',
-      server: '127.0.0.1',
-      database: 'BD_DEV_PRUEBAS',
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      server: process.env.DB_SERVER,
+      database: process.env.DB_NAME,
       options: {
         encrypt: false,
         trustServerCertificate: true,
