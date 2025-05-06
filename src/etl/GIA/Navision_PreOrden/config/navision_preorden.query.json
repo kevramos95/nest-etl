@@ -1,0 +1,38 @@
+[
+  {
+    "$project": {
+      "_id": 1,
+      "Codigo": 1,
+      "DatosPais": 1,
+      "DatosTrabajo": 1,
+      "DetalleProductos": 1,
+      "EmpresaGanadora": 1,
+      "Dates": 1,
+      "Users": 1,
+      "DatosEmpresa": 1,
+      "DatosPago": 1,
+      "TipoOperacion": 1,
+      "Status": 1,
+      "TipoCompra": 1,
+      "Categoria": 1,
+      "DatosNav": 1
+    }
+  },
+  {
+    "$match": {
+      "$expr": {
+        "$in": [
+          {
+            "$year": "$Dates.Registry.Date"
+          },
+          [
+            2021,
+            2022,
+            2023,
+            2024
+          ]
+        ]
+      }
+    }
+  }
+]

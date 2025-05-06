@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { SqlService } from '../database/connections/sql.service';
 import { runGIAProveedorETL } from './GIA/Proveedor/application/proveedor.etl';
 import { runSGSOControlPreventivoETL } from './SGSO/ControlPreventivo/application/controlpreventivo.etl';
-
+import { runGIANavisionPreOrdenETL } from './GIA/Navision_PreOrden/application/navisionpreorden.etl';
 // import { runDimensionGiaEmpresaETL } from './GIA/Empresa/empresa.etl';
 // import { runDimensionGiaContactoETL } from './GIA/Contacto/contacto.etl';
 
@@ -17,6 +17,7 @@ export class EtlService {
 
     await runGIAProveedorETL(pool);
     await runSGSOControlPreventivoETL(pool);
+    await runGIANavisionPreOrdenETL(pool);
     // await runDimensionGiaContactoETL(pool);
 
     await this.sqlService.close();
@@ -32,6 +33,9 @@ export class EtlService {
         break;
       case 'sgso_controlpreventivo':
         await runSGSOControlPreventivoETL(pool);
+        break;
+      case 'gia_navisionpreorden':
+        await runGIANavisionPreOrdenETL(pool);
         break;
       // case 'dimensiongia_contacto':
       //   await runDimensionGiaContactoETL(pool);
