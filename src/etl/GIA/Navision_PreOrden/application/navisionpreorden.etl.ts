@@ -14,14 +14,14 @@ export async function runGIANavisionPreOrdenETL(pool: mssql.ConnectionPool) {
   const convertNumber = (importe: number | string): number => {
     let _importe: number;
     if (typeof importe === 'string') {
-        _importe = Number.parseFloat(importe);
+      _importe = Number.parseFloat(importe);
     } else {
-        _importe = importe;
+      _importe = importe;
     }
     return parseFloat(_importe.toFixed(4))
   };
-  
-  //BULK
+
+  //Parsea a SQL
   const entidades: EntityOrdenCompra[] = registros.map(d => new EntityOrdenCompra({
     padre_id: d._id?.toString() ?? '',
     codigo: d.Codigo ?? '',
@@ -48,9 +48,19 @@ export async function runGIANavisionPreOrdenETL(pool: mssql.ConnectionPool) {
     status: d.Status?.Icono?.Status?.toString() ?? '',
     codigoUsuarioRegistroAcepta: d.Users?.Accepted?.IdUser?.toString() ?? '',
   }));
-   
-  await insertBulk(pool,entidades);
-  
 
+  //Chunks
+  const chunkSize = 10000;
+  for (let i = 0; i < entidades.length; i += chunkSize) {
+    const chunk = entidades.slice(i, i + chunkSize);
+    console.log(`⏳ Insertando registros ${i} a ${i + chunk.length}...`);
+    try {
+      //Bulk
+      await insertBulk(pool, chunk);
+    } catch (error) {
+      console.error(`❌ Error al insertar registros ${i} a ${i + chunk.length}:`, error);
+    }
+  }
+  
   console.log('✅ ETL navisionpreornde completado.');
 }
