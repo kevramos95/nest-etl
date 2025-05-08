@@ -14,18 +14,18 @@ export async function runSGSOControlPreventivoETL(pool: mssql.ConnectionPool) {
   // Mapear los registros de Mongo a instancias de ControlPreventivoEntity
   const entidades: ControlPreventivoEntity[] = registros.map(d => new ControlPreventivoEntity(
     d._id.toString() ?? null,
-    d.codigo ?? null,
-    d.codigoPais ?? null,
-    d.codigoOT ?? null,
-    d.codigoDelegacion ?? null,
-    d.codigoEmpresa ?? null,
-    d.codigoActividad ?? null,
-    d.codigoMomento ?? null,
-    d.codigoFechaRegistro ?? null,
-    d.tecnico ?? null,
-    d.jefetrabajo ?? null,
-    d.idControlPreventivo ?? null,
-    d.estado ?? null,
+    d.Id.toString() ?? null,
+    d.Pais?.IdPais?.toString() ?? null,
+    d.OT?.IdOT?.toString() ?? null,
+    d.IdDelegacion?.toString() ?? null,
+    d.Empresa?.NroDocumento?.toString() ?? null,
+    d.IdActividad?.toString() ?? null,
+    d.Momento?.IdMomento?.toString() ?? null,
+    d.FechaRegistro?.IdFecha?.toString() ?? null,
+    d.Tecnico?.Identificacion?.toString()  ?? null,
+    d.JefeObraRecurso?.Identificacion?.toString() ?? null,
+    d.IdControlPreventivo?.toString() ?? null,
+    d.Estado?.Estado?.toString()  ?? null,
     d.estadorevision ?? null,
     d.puntuacion ?? null,
     d.comentario ?? null,
@@ -33,10 +33,21 @@ export async function runSGSOControlPreventivoETL(pool: mssql.ConnectionPool) {
     d.fechapuntuacion ?? null,
     d.personalrevisionpdf ?? null,
     d.personalrevisionaudio ?? null,
-    d.nombreGrupo ?? null
+    d.Grupo?.Grupo?.toString() ?? null
   ));
 
-  await insertBulk(pool, entidades);
+//Chunks
+  const chunkSize = 10000;
+  for (let i = 0; i < entidades.length; i += chunkSize) {
+    const chunk = entidades.slice(i, i + chunkSize);
+    console.log(`⏳ Insertando registros ${i} a ${i + chunk.length}...`);
+    try {
+      //Bulk
+      await insertBulk(pool, chunk);
+    } catch (error) {
+      console.error(`❌ Error al insertar registros ${i} a ${i + chunk.length}:`, error);
+    }
+  }
 
   console.log('✅ ETL ControlPreventivo completado.');
 }
